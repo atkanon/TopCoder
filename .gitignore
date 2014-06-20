@@ -164,3 +164,7 @@ pip-log.txt
 
 a.out
 plugins
+
+CodeProcessor.jar
+FileEdit.jar
+TZTester.jar
