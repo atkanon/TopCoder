@@ -1,39 +1,142 @@
-#include <iostream>
-#include <sstream>
+// 2 "GoodSubset.cpp"
+// BEGIN CUT HERE
+/*
+// PROBLEM STATEMENT
+// 
+You have some cards, each containing a positive integer.
+You are given a vector <int> d.
+Each element of d is one of those integers.
+The integers are not necessarily distinct.
+
+
+
+You are also given an int goodValue.
+You are interested in non-empty subsets of cards with the following property:
+The product of integers written on those cards is exactly equal to goodValue.
+
+
+
+Let X be the number of subsets with the above property.
+Compute and return the value (X modulo 1,000,000,007).
+
+
+DEFINITION
+Class:GoodSubset
+Method:numberOfSubsets
+Parameters:int, vector <int>
+Returns:int
+Method signature:int numberOfSubsets(int goodValue, vector <int> d)
+
+
+CONSTRAINTS
+-goodValue will be between 1 and 2,000,000,000, inclusive.
+-d will contain between 1 and 100 elements, inclusive.
+-Each element of d will be between 1 and 2,000,000,000, inclusive.
+
+
+EXAMPLES
+
+0)
+10
+{2,3,4,5}
+
+Returns: 1
+
+There is only one good subset:{2,5}.
+
+1)
+6
+{2,3,4,5,6}
+
+Returns: 2
+
+There are two good subsets: {2,3} and {6}.
+
+2)
+1
+{1,1,1}
+
+Returns: 7
+
+All non-empty subsets of this set of cards are good.
+
+3)
+12
+{1,2,3,4,5,6,7,8,9,10,11,12}
+
+Returns: 6
+
+
+
+4)
+5
+{1,2,3,4}
+
+Returns: 0
+
+
+
+*/
+// END CUT HERE
+
 #include <string>
 #include <vector>
-#include <set>
-#include <algorithm>
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <sstream>
 #include <map>
 
-#define mod 1000000007
+#define MOD 1000000007
 
 using namespace std;
+
 typedef long long LL;
 
-map<LL, LL> m;
+map<int, int> dp[101][2];
 
 class GoodSubset {
 	public:
+
+	int calc(int x, int n, vector<int> d, int present) {
+		if (dp[n][present].find(x) != dp[n][present].end()) {
+//			cerr << n << " " << present << " " << x << " " << dp[n][present][x] << endl;
+			return dp[n][present][x];
+		}
+
+		if (n == 0) {
+			int res = 0;
+			if (d[0] == x) res++;
+			if (x == 1 && present) res++;
+//			cerr << "in " << n << " " << present << " " << x << " " << res << endl;
+			return dp[n][present][x] = res;
+		}
+
+
+		if (x % d[n]) {
+			return dp[n][present][x] = calc(x, n-1, d, present);
+//			return calc(x, n-1, d, present);
+		} else {
+			return dp[n][present][x] = (calc(x/d[n], n-1, d, 1) + calc(x, n-1, d, present)) % MOD;
+//			return (calc(x/d[n], n-1, d, 1) + calc(x, n-1, d, present)) % MOD;
+		}
+	}
+
 	int numberOfSubsets(int goodValue, vector <int> d) {
-		int n = d.size();
-		LL p = goodValue;
-		m[1] = 1;
-		for (int i = 0; i < n; i++) {
-			map<LL, LL>::reverse_iterator rit;
-			LL y = d[i];
-			for (rit = m.rbegin(); rit != m.rend(); ++rit) {
-				LL z = rit->first;
-				z *= y;
-				if (p%z == 0) {
-					m[z] = (m[z]+rit->second)%mod;
+		int sz = d.size();
+
+		for (int i = 0; i < 101; i++) {
+			for (int j = 0; j < 2; j++) {
+				for (map<int ,int>::iterator it = dp[i][j].begin(); it != dp[i][j].end();) {
+					dp[i][j].erase(it++);
 				}
 			}
 		}
-		m[1]--;
-		return m[p];
+
+		int res = calc(goodValue, sz-1, d, 0);
+		return res;
 	}
-	
+
 	
 // BEGIN CUT HERE
 	public:
@@ -52,8 +155,10 @@ class GoodSubset {
 };
 
 // BEGIN CUT HERE
+
 int main() {
 	GoodSubset ___test;
 	___test.run_test(-1);
 }
+
 // END CUT HERE
