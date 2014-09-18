@@ -118,28 +118,29 @@ class Jumping {
 	public:
 	string ableToGet(int x, int y, vector <int> jumpLengths) {
 		int sz = jumpLengths.size();
+		LL dist = x*x + y*y;
+		string YES = "Able";
+		string NO = "Not able";
 
 		if (sz == 1) {
-			int len = jumpLengths[0];
-			if (len*len == x*x + y*y) return "Able";
-			else return "Not able";
-		}		
-
-		for (int i = 1; i < sz; i++) {
-			int len1 = 0, len2 = 0;
-			for (int j = 0; j < i; j++) {
-				len1 += jumpLengths[j];
+			if (jumpLengths[0]*jumpLengths[0] == dist) return YES;
+			else return NO;
+		} else {
+			LL sum = 0;
+			for (int i = 0; i < sz; i++) {
+				sum += jumpLengths[i];
 			}
-			for (int j = i; j < sz; j++) {
-				len2 += jumpLengths[j];
-			}
-			if ((len1 + len2)*(len1 + len2) >= x*x + y*y &&
-				(len1 - len2)*(len1 - len2) <= x*x + y*y &&
-				(len2 - len1)*(len2 - len1) <= x*x + y*y) {
-				return "Able";
+			if (sum*sum >= dist) {
+				for (int i = 0; i < sz; i++) {
+					LL L = jumpLengths[i];
+					if (2*L-sum > 0 && (2*L-sum)*(2*L-sum) > dist) {
+						return NO;
+					}
+				}
+				return YES;
 			}
 		}
-		return "Not able";
+		return NO;
 	}
 
 	
