@@ -172,4 +172,4 @@ plugins
 CodeProcessor.jar
 FileEdit.jar
 TZTester.jar
-src/
+src/a.out
