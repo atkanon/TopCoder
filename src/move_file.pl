@@ -15,18 +15,29 @@ my $target_dir = $ARGV[1];
 say "Target file name: $file_name";
 say "Target directory: $target_dir";
 
-if (-d "../$target_dir") {
-    say "ERROR: Directory $target_dir not found";
-    exit(1);
+if (!(-d "../$target_dir")) {
+    say "WARNING: Directory $target_dir not found";
+    say "creating...";
+    my $return_value = system "mkdir ../${target_dir}";
+    if ($return_value != 0) {
+        say "failed";
+        exit(1);
+    }
 }
 
 if (-f "$file_name") {
+    if (system "mv ${file_name} ../${target_dir}") {
+        say "error failed to"
+    }
+} else {
     say "ERROR: File $file_name not found";
     exit(1);
 }
 
 
-my $return_value = system "cat file";
+my $cat = 'cat';
+
+my $return_value = system "$cat temp.cpp";
 
 if ($return_value == 0) {
 	say "Successfully move file!!";
