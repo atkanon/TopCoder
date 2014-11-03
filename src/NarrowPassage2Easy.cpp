@@ -1,0 +1,1 @@
+../SRM638/NarrowPassage2Easy.cpp
