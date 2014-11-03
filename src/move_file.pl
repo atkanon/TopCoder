@@ -29,7 +29,6 @@ if (-l "$file_name") {
     exit(1);
 }
 
-exit(1);
 my $return_value = system "mv $file_name ../$target_dir/ && ln -s ../$target_dir/$file_name $file_name";
 
 if ($return_value == 0) {
