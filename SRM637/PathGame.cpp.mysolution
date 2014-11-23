@@ -93,7 +93,6 @@ Returns: "Snuke"
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
-#include <set>
 
 using namespace std;
 
@@ -101,67 +100,130 @@ typedef long long LL;
 
 class PathGame {
 	public:
-	string judge(vector <string> board) {
-		int len = board[0].length();
-		bool forbidden[2][1001] = {0};
+
+	const int none = -1, win = 1, lose = 0;
+	int dp[1000][2][2][2][2] = {0};
+	int nimber(int n, int L0, int L1, int R0, int R1) {
+		if (dp[n][L0][L1][R0][R1] != none) {
+			return dp[n][L0][L1][R0][R1];
+		}
+
+		if (n < 2) return -1;
+
+		int res = lose;
+
+		if (L0 == 0 && L1 == 1) {
+			res |= !(0 ^ nimber(n-1, 0, 1, R0, R1));
+		}
+		if (L0 == 1 && L1 == 0) {
+			res |= !(0 ^ nimber(n-1, 1, 0, R0, R1));
+		}
+		if (L0 == 0 && L1 == 0) {
+			res |= !(0 ^ nimber(n-1, 1, 0, R0, R1));
+			res |= !(0 ^ nimber(n-1, 0, 1, R0, R1));
+		}
+
+		if (R0 == 0 && R1 == 1) {
+			res |= !(nimber(n-1, L0, L1, 0, 1) ^ 0);
+		}
+		if (R0 == 1 && R1 == 0) {
+			res |= !(nimber(n-1, L0, L1, 1, 0) ^ 0);
+		}
+		if (R0 == 0 && R1 == 0) {
+			res |= !(nimber(n-1, L0, L1, 1, 0) ^ 0);
+			res |= !(nimber(n-1, L0, L1, 0, 1) ^ 0);
+		}
+
 		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < len; j++) {
-				if (board[i][j] == '#') forbidden[i][j] = true;
-				for (int j2 = j-1; j2 <= j+1; j2++) {
-					if (j2 >= 0 && j2 < len) {
-						forbidden[1-i][j] = true;
+			for (int j = 1; j < n-1; j++) {
+				res |= !(nimber(j, L0, L1, i, !i) ^ 0 ^ nimber(n-j-1, i, !i, R0, R1));
+			}
+		}
+		return dp[n][L0][L1][R0][R1] = res;
+	}
+
+	void init_dp() {
+		for (int i = 0; i < 1000; i++) {
+			for (int j = 0; j < 2; j++) {
+				for (int k = 0; k < 2; k++) {
+					for (int l = 0; l < 2; l++) {
+						for (int m = 0; m < 2; m++) {
+							dp[i][j][k][l][m] = none;
+						}
 					}
 				}
 			}
 		}
+		dp[1][0][0][0][0] = win;
 
-		int grundy[1001][1<<4] = {0};
-		for (int n = 1; n <= len; n++) {
-			for (int mask = 0; mask < 1<<4; mask++) {
-//				set<int> visited;
-				int visited[100000] = {0};
-				for (int i = 0; i < 2; i++) {
-					for (int j = 0; j < n; j++) {
-						if (j == 0 && (mask & 1<<i) != 0) continue;
-						if (j == n-1 && (mask & 1<<(2+i) != 0)) continue;
-//						visited.insert(grundy[j][mask & 3 | 1<<(3-i)] ^ 0 ^ grundy[n - j - 1][mask & 12 | 1<<(1-i)]);
-						visited[grundy[j][mask & 3 | 1<<(3-i)] ^ 0 ^ grundy[n - j - 1][mask & 12 | 1<<(1-i)]] = 1;
-					}
-				}
-//				while (visited.find(grundy[n][mask]) != visited.end()) {
-				while (visited[grundy[n][mask]]) {
-					grundy[n][mask]++;
-				}
-			}
+		dp[1][0][0][0][1] = 
+		dp[1][1][0][0][0] = 
+		dp[1][0][1][0][0] = 
+		dp[1][0][0][1][0] = win;
+
+		dp[1][1][0][1][0] = 
+		dp[1][0][1][0][1] = win;
+
+		dp[1][1][1][1][1] = 
+		dp[1][0][1][1][1] = 
+		dp[1][1][0][1][1] = 
+		dp[1][1][1][0][1] = 
+		dp[1][1][1][1][0] = 
+		dp[1][1][1][0][0] = 
+		dp[1][0][0][1][1] = win;
+
+		dp[1][1][0][0][1] = 
+		dp[1][0][1][1][0] = lose;
+	}
+
+	string judge(vector <string> board) {
+		init_dp();
+//		cerr << nimber(3, 1, 0, 0, 0) << endl;
+//		cerr << nimber(3, 1, 0, 1, 0) << endl;
+/*		cerr << nimber(2, 0, 0, 0, 0) << endl;
+		cerr << nimber(2, 1, 0, 1, 0) << endl;
+		cerr << nimber(2, 0, 1, 0, 1) << endl;
+		cerr << nimber(2, 0, 1, 1, 0) << endl;
+		cerr << nimber(2, 1, 0, 0, 1) << endl;*/
+		cerr << nimber(2, 0, 0, 0, 1) << endl;
+
+//		cerr << nimber(1, 0, 0, 1, 0) << endl;
+//		cerr << nimber(3, 1, 0, 0, 0) << endl;
+
+
+		int sz = board[0].length();
+
+		if (sz == 1) {
+			if (board[0][0] != '#' && board[1][0] != '#') return "Snuke";
+			else return "Sothe";
 		}
 
-/*
-		for (int n = 0; n < len; n++) {
-			for (int mask = 0; mask < 1<<4; mask++) {
-				printf("%d %d %d\n", n, mask, grundy[n][mask]);
+		int begin = 0;
+		int L0 = 0, L1 = 0;
+		int res = 0;
+		for (int i = 0; i < sz; i++) {
+			if (board[0][i] == '#') {
+				if (i > 0) res ^= nimber(i-begin, L0, L1, 1, 0);
+				res ^= 0;
+				L0 = 1; L1 = 0; begin = i+1;
 			}
-		}*/
-
-		int ans = 0;
-		for (int i = 0; i < len;) {
-			if (!forbidden[0][i] || !forbidden[1][i]) {
-				int j = i;
-				while (j+1 < len && (!forbidden[0][j+1] || !forbidden[1][j+1])) {
-					j++;
-				}
-				int mask = 0;
-				if (forbidden[0][i]) mask |= 1;
-				if (forbidden[1][i]) mask |= 2;
-				if (forbidden[0][j]) mask |= 4;
-				if (forbidden[1][j]) mask |= 8;
-				ans ^= grundy[j-i+1][mask];
-				i = j+1;
-			} else {
-				i++;
+			if (board[1][i] == '#') {
+				if (i > 0) res ^= nimber(i-begin, L0, L1, 0, 1);
+				res ^= 0;
+				L0 = 0; L1 = 1; begin = i+1;
 			}
 		}
+		if (begin < sz) {
+			if (board[0][sz-1] == '#') {
+				res ^= nimber(sz - begin, L0, L1, 1, 0);
+			}
+			if (board[1][sz-1] == '#') {
+				res ^= nimber(sz - begin, L0, L1, 0, 1);
+			}
+		} 
 
-		return ans == 0 ? "Sothe" : "Snuke";
+		if (res == win) return "Snuke";
+		else return "Sothe";
 	}
 
 	
