@@ -1,4 +1,3 @@
-#line 2 "BoardFolding.cpp"
 #include <string>
 #include <vector>
 
@@ -25,12 +24,19 @@ class BoardFolding {
 				bool mirror = true;
 				for (int d2 = 1; d2 <= d; d2++) {
 					for (int j = 0; j < M; j++) {
-						if (i - d2 < 0 || i + d2 >= M) continue;
-						if (paper[i-d2][j] != paper[i+d2][j]) {
+						if (i - d2 + 1 < 0 || i + d2 >= M) {
+							mirror = false;
+							break;
+						}
+						if (paper[i-d2+1][j] != paper[i+d2][j]) {
 							mirror = false;
 							break;
 						}
 					}
+				}
+
+				if (mirror) {
+					x_mirror[i-d][i+d]
 				}
 			}
 		}
