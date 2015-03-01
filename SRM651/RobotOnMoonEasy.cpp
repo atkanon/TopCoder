@@ -140,7 +140,30 @@ typedef long long LL;
 class RobotOnMoonEasy {
 	public:
 	string isSafeCommand(vector <string> board, string S) {
-		
+		int sz = board.size();
+		int len = board[0].length();
+		pair<int, int> start;
+		for (int i = 0; i < sz; i++) {
+			for (int j = 0; j < len; j++) {
+				if (board[i][j] == 'S') start = make_pair(i, j);
+			}
+		}
+
+		int commandSize = S.length();
+		pair<int, int> current = start;
+		for (int i = 0; i < commandSize; i++) {
+			char command = S[i];
+			pair<int, int> next = current;
+			if (command == 'U') next.first--;
+			if (command == 'D') next.first++;
+			if (command == 'L') next.second--;
+			if (command == 'R') next.second++;
+
+			if (next.first < 0 || next.first >= sz) return "Dead";
+			if (next.second < 0 || next.second >= len) return "Dead";
+			if (board[next.first][next.second] != '#') current = next;
+		}
+		return "Alive";
 	}
 
 	
