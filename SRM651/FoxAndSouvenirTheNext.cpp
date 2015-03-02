@@ -94,14 +94,17 @@ class FoxAndSouvenirTheNext {
 	public:
 	string ableToSplit(vector <int> value) {
 		int sz = value.size();
-		int count[1300][51] = {0};
+
+		const int N = 2501;
+		const int M = 51;
+		int count[N][M] = {0};
 		count[0][0] = 1;
 		for (int i = 0; i < sz; i++) {
 			int n = value[i];
 //			cerr << i << endl;
-			int nextCount[1300][51] = {0};
-			for (int j = 0; j < 1300; j++) {
-				for (int k = 0; k < 51; k++) {
+			int nextCount[N][M] = {0};
+			for (int j = 0; j < N; j++) {
+				for (int k = 0; k < M; k++) {
 					if (count[j][k]) {
 //						cerr << j+n << " " << k+1 << endl;
 						nextCount[j+n][k+1] = 1;
