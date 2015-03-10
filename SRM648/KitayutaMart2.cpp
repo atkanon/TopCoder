@@ -1,3 +1,4 @@
+
 // 2 "KitayutaMart2.cpp"
 // BEGIN CUT HERE
 /*
