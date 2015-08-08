@@ -96,8 +96,21 @@ typedef long long LL;
 
 class BearCheats {
 	public:
+	string itos(int n) {
+		stringstream ss;
+		ss << n;
+		return ss.str();
+	}
 	string eyesight(int A, int B) {
-		
+		string a = itos(A);
+		string b = itos(B);
+		int len = a.length();
+		int count = 0;
+		for (int i = 0; i < len; i++) {
+			if (a[i] != b[i]) count++;
+		}
+		if (count <= 1) return "happy";
+		else return "glasses";
 	}
 
 	
