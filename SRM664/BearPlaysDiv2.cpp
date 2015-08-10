@@ -100,7 +100,23 @@ typedef long long LL;
 class BearPlaysDiv2 {
 	public:
 	string equalPiles(int A, int B, int C) {
-		
+		int S = A + B + C;
+		string imp = "impossible";
+		string po = "possible";
+		if (S % 3) {
+			return imp;
+		} else {
+			int ms = S / 3;
+			while (ms % 2 == 0) {
+				ms /= 2;
+			}
+
+			if (A % ms) return imp;
+			if (B % ms) return imp;
+			if (C % ms) return imp;
+		}
+
+		return po;
 	}
 
 	
