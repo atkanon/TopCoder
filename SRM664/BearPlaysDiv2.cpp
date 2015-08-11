@@ -92,31 +92,44 @@ Returns: "possible"
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include <queue>
+#include <cstring>
 
 using namespace std;
 
 typedef long long LL;
 
+int used[1501][1501];
+
 class BearPlaysDiv2 {
 	public:
 	string equalPiles(int A, int B, int C) {
-		int S = A + B + C;
 		string imp = "impossible";
 		string po = "possible";
-		if (S % 3) {
-			return imp;
-		} else {
-			int ms = S / 3;
-			while (ms % 2 == 0) {
-				ms /= 2;
-			}
 
-			if (A % ms) return imp;
-			if (B % ms) return imp;
-			if (C % ms) return imp;
+		int N = A + B + C;
+		if (N % 3) return imp;
+		memset(used, 0, sizeof(used));
+
+		queue<pair<int, int> > q;
+		q.push(make_pair(A, B));
+		while (!q.empty()) {
+			pair<int, int> p = q.front();
+			q.pop();
+
+			int a = p.first, b = p.second, c = N - a - b;
+			used[a][b] = 1;
+			if (a < c && !used[2*a][b]) q.push(make_pair(2*a, b));
+			if (a < b && !used[2*a][b-a]) q.push(make_pair(2*a, b-a));
+			if (b < c && !used[a][2*b]) q.push(make_pair(a, 2*b));
+			if (b < a && !used[a-b][2*b]) q.push(make_pair(a-b, 2*b));
+			if (c < a && !used[a-c][b]) q.push(make_pair(a-c, b));
+			if (c < b && !used[a][b-c]) q.push(make_pair(a, b-c));
 		}
 
-		return po;
+		if (used[N/3][N/3]) return po;
+
+		return imp;
 	}
 
 	
