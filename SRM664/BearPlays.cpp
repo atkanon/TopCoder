@@ -109,7 +109,18 @@ typedef long long LL;
 class BearPlays {
 	public:
 	int pileSize(int A, int B, int K) {
-		
+		LL S = A + B;
+		LL c = 1;
+		LL t = 2;
+		while (K) {
+			if (K%2) c = c * t % S;
+			t = (t * t) % S;
+			K /= 2;
+		}
+
+		LL a = (A * c) % S;
+		if (a <= S/2) return a;
+		else return S - a;
 	}
 
 	
