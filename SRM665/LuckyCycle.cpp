@@ -146,10 +146,14 @@ class LuckyCycle {
             if (weight[i] == 4) {
                 W[edge1[i]][edge2[i]][0] = 1;
                 W[edge2[i]][edge1[i]][0] = 1;
+                W[edge1[i]][edge2[i]][1] = 0;
+                W[edge2[i]][edge1[i]][1] = 0;
             } else {
                 // 7
                 W[edge1[i]][edge2[i]][1] = 1;
                 W[edge2[i]][edge1[i]][1] = 1;
+                W[edge1[i]][edge2[i]][0] = 0;
+                W[edge2[i]][edge1[i]][0] = 0;
             }
         }
         
@@ -157,18 +161,11 @@ class LuckyCycle {
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-//                    if (k == i) continue;
-//                    if (k == j) continue;
-                    if (i == j) continue;
-//                    cerr << k << " " << i << " " << j << endl;
-//                    if (W[i][k][0]+W[i][k][1] < INF && W[k][j][0]+W[k][j][1] < INF) {
-//                        cerr << k << " " << i << " " << j << endl;
-                        W[i][j][0] = min(W[i][j][0], W[i][k][0] + W[k][j][0]);
-                        W[j][i][0] = W[i][j][0];
-                        W[i][j][1] = min(W[i][j][1], W[i][k][1] + W[k][j][1]);
-                        W[j][i][1] = W[i][j][1];
-                        printf("i:%d k:%d j%d, 4(%d %d %d), 7(%d %d %d)\n", i, k, j, W[i][k][0], W[i][j][0], W[k][j][0], W[i][k][1], W[i][j][1], W[k][k][1]);
-//                    }
+                    W[i][j][0] = min(W[i][j][0], W[i][k][0] + W[k][j][0]);
+                    W[j][i][0] = W[i][j][0];
+                    W[i][j][1] = min(W[i][j][1], W[i][k][1] + W[k][j][1]);
+                    W[j][i][1] = W[i][j][1];
+//                        printf("i:%d k:%d j%d, 4(%d %d %d), 7(%d %d %d)\n", i, k, j, W[i][k][0], W[i][j][0], W[k][j][0], W[i][k][1], W[i][j][1], W[k][k][1]);
                 }
             }
         }
@@ -177,7 +174,7 @@ class LuckyCycle {
             for (int j = 0; j < n; j++) {
                 int c4 = W[i][j][0];
                 int c7 = W[i][j][1];
-                cerr << i << " " << j << " " << W[i][j][0] << " " << W[i][j][1] << endl;
+//                cerr << i << " " << j << " " << W[i][j][0] << " " << W[i][j][1] << endl;
                 if (c4 >= 1 && c7 >= 1) {
                     if (c4 - c7 == 1) {
                         ans.push_back(i+1);
@@ -217,7 +214,7 @@ class LuckyCycle {
 
 int main() {
 	LuckyCycle ___test;
-	___test.run_test(3);
+	___test.run_test(-1);
 }
 
 // END CUT HERE
