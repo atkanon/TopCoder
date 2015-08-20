@@ -89,7 +89,12 @@ typedef long long LL;
 class LuckySum {
 	public:
 	long long construct(string note) {
-		
+        long len = note.length();
+        for (long i = len - 1; i >= 0; i--) {
+            char c = note[i];
+        }
+        
+        return 0;
 	}
 
 	
