@@ -90,8 +90,38 @@ class LuckySum {
 	public:
 	long long construct(string note) {
         long len = note.length();
+        vector<pair<int, int> > vp;
+        bool first = true;
+        
         for (long i = len - 1; i >= 0; i--) {
             char c = note[i];
+            
+            if (first) {
+                if (c == '?') {
+                    vp.push_back(make_pair(4, 4));
+                    vp.push_back(make_pair(4, 7));
+                    vp.push_back(make_pair(7, 4));
+                    vp.push_back(make_pair(7, 7));
+                } else {
+                    int n = c - '0';
+                    if (n == 1) {
+                        vp.push_back(make_pair(7, 4));
+                        vp.push_back(make_pair(4, 7));
+                    } else if (n == 4) {
+                        vp.push_back(make_pair(7, 7));
+                    } else if (n == 8) {
+                        vp.push_back(make_pair(4, 4));
+                    }
+                }
+                first = false;
+            } else {
+                long sz = vp.size();
+                if (sz == 0) {
+                    return -1;
+                }
+                
+                
+            }
         }
         
         return 0;
