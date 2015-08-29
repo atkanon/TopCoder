@@ -88,43 +88,57 @@ typedef long long LL;
 
 class LuckySum {
 	public:
-	long long construct(string note) {
-        long len = note.length();
-        vector<pair<int, int> > vp;
-        bool first = true;
-        
-        for (long i = len - 1; i >= 0; i--) {
-            char c = note[i];
-            
-            if (first) {
-                if (c == '?') {
-                    vp.push_back(make_pair(4, 4));
-                    vp.push_back(make_pair(4, 7));
-                    vp.push_back(make_pair(7, 4));
-                    vp.push_back(make_pair(7, 7));
+    string note;
+    LL ans = -1;
+    
+    bool check(LL num, string note) {
+        stringstream ss;
+        ss << num;
+        string nums = ss.str();
+        if (nums.length() != note.length()) return false;
+
+        for (long i = 0; i < note.length(); i++) {
+            if (note[i] != '?' && note[i] != nums[i]) return false;
+        }
+
+        return true;
+    }
+    
+    void backtrack(LL pos, LL len, LL sum, LL zero_pos) {
+        if (pos == len) {
+            if (check(sum, note)) {
+//                cerr << sum << endl;
+                if (this->ans != -1) {
+                    ans = min(this->ans, sum);
                 } else {
-                    int n = c - '0';
-                    if (n == 1) {
-                        vp.push_back(make_pair(7, 4));
-                        vp.push_back(make_pair(4, 7));
-                    } else if (n == 4) {
-                        vp.push_back(make_pair(7, 7));
-                    } else if (n == 8) {
-                        vp.push_back(make_pair(4, 4));
-                    }
+                    this->ans = sum;
                 }
-                first = false;
+            }
+        } else {
+            if (zero_pos >= pos) {
+                backtrack(pos+1, len, sum * 10 + 4, zero_pos);
+                backtrack(pos+1, len, sum * 10 + 7, zero_pos);
             } else {
-                long sz = vp.size();
-                if (sz == 0) {
-                    return -1;
-                }
-                
-                
+                backtrack(pos+1, len, sum * 10 + 8, zero_pos);
+                backtrack(pos+1, len, sum * 10 + 11, zero_pos);
+                backtrack(pos+1, len, sum * 10 + 14, zero_pos);
+            }
+        }
+    }
+    
+	long long construct(string note) {
+        LL len = note.length();
+        this->note = note;
+        this->ans = -1;
+        
+        for (LL i = len - 2; i >= -1; i--) {
+            backtrack(0, len, 0, i);
+            if (len > 1) {
+                backtrack(1, len, 0, i);
             }
         }
         
-        return 0;
+        return this->ans;
 	}
 
 	
