@@ -81,6 +81,7 @@ Returns: 11888888888888
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include "math.h"
 
 using namespace std;
 
@@ -88,8 +89,63 @@ typedef long long LL;
 
 class LuckySum {
 	public:
+    string note;
+    LL ans = -1;
+    
+    void backtrack(LL pos, LL len, LL sum, LL zero_pos) {
+        if (this->ans != -1) return;
+
+        if (pos == len) {
+            if (sum <= 0) return;
+            if ((int)log10(double(sum)) + 1 != len) return;
+
+            if (this->note[pos-1] - '0' == sum % 10 || this->note[pos-1] == '?') {
+                if (this->ans != -1) {
+                    ans = min(this->ans, sum);
+                } else {
+                    this->ans = sum;
+                }
+            }
+        } else {
+            if (zero_pos >= pos) {
+                if (pos == 0 || this->note[pos-1] - '0' == sum % 10 || this->note[pos-1] == '?') {
+                    backtrack(pos+1, len, sum * 10 + 4, zero_pos);
+                    backtrack(pos+1, len, sum * 10 + 7, zero_pos);
+                } else {
+//                    printf("1: pos: %lld, sum: %lld, note: %c\n", pos, sum, this->note[pos-1]);
+                }
+            } else {
+                if (pos == 0 || this->note[pos-1] - '0' == sum % 10 || this->note[pos-1] == '?') {
+                    backtrack(pos+1, len, sum * 10 + 8, zero_pos);
+                } else {
+//                    printf("2: pos: %lld, sum: %lld, note: %c\n", pos, sum, this->note[pos-1]);
+                }
+                
+                if (pos == 0 || this->note[pos-1] - '0' == (sum + 1) % 10 || this->note[pos-1] == '?') {
+                    backtrack(pos+1, len, sum * 10 + 11, zero_pos);
+                    backtrack(pos+1, len, sum * 10 + 14, zero_pos);
+                } else {
+//                    printf("3: pos: %lld, sum: %lld, note: %c\n", pos, sum, this->note[pos-1]);
+                }
+            }
+        }
+    }
+    
 	long long construct(string note) {
-		
+        LL len = note.length();
+        this->note = note;
+        this->ans = -1;
+        
+        for (LL i = len - 2; i >= -1; i--) {
+            if (len > 1) {
+                backtrack(1, len, 0, i);
+            }
+        }
+        for (LL i = len - 2; i >= -1; i--) {
+            backtrack(0, len, 0, i);
+        }
+        
+        return this->ans;
 	}
 
 	
