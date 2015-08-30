@@ -1,0 +1,1 @@
+../SRM666/GoodString.cpp
