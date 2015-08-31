@@ -15,7 +15,7 @@ you can produce one of the strings "ab????", "?ab???", "??ab??", "???ab?", and "
 
 
 According to Chandan, a good string is a string that can be constructed in the following way:
-Initially, he takes the empty string "".
+Initially, he takes the empty string "".s
 Then, he performs a sequence of zero or more steps.
 In each step he inserts the string "ab" anywhere into the current string.
 
@@ -104,7 +104,19 @@ typedef long long LL;
 class GoodString {
 	public:
 	string isGood(string s) {
-		
+        while (true) {
+            long len = s.length();
+            for (int i = 0; i < len - 1; i++) {
+                if (s[i] == 'a' && s[i+1] == 'b') {
+                    s = s.substr(0, i) + s.substr(i+2, len - (i+2) + 1);
+                    break;
+                }
+            }
+            if (len == s.length()) break;
+        }
+        
+        if (s == "") return "Good";
+        else return "Bad";
 	}
 
 	
