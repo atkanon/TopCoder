@@ -15,7 +15,7 @@ you can produce one of the strings "ab????", "?ab???", "??ab??", "???ab?", and "
 
 
 According to Chandan, a good string is a string that can be constructed in the following way:
-Initially, he takes the empty string "".
+Initially, he takes the empty string "".s
 Then, he performs a sequence of zero or more steps.
 In each step he inserts the string "ab" anywhere into the current string.
 
