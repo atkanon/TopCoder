@@ -121,6 +121,7 @@ Returns: 4
 #include <cstdio>
 #include <sstream>
 
+#define INF 2<<28
 using namespace std;
 
 typedef long long LL;
@@ -128,7 +129,37 @@ typedef long long LL;
 class WalkOverATree {
 	public:
 	int maxNodesVisited(vector <int> parent, int L) {
-		
+        long sz = parent.size();
+        
+        int A[51][51] = {0};
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 50; j++) {
+                A[i][j] = INF;
+            }
+            A[i][i] = 0;
+        }
+        for (int i = 0; i < sz; i++) {
+            A[parent[i]][i+1] = A[i+1][parent[i]] = 1;
+        }
+        for (int i = 0; i <= sz; i++) {
+            for (int j = 0; j <= sz; j++) {
+                for (int k = 0; k <= sz; k++) {
+                    A[j][k] = A[k][j] = min(A[j][k], A[j][i] + A[i][k]);
+//                    cerr << j << " " << k << " " << A[j][k] << endl;
+                }
+            }
+        }
+        
+        int maxDepth = 0;
+        for (int i = 0; i <= sz; i++) {
+            if (A[0][i] != INF) {
+                maxDepth = max(maxDepth, A[0][i]);
+            }
+        }
+        
+//        cerr << maxDepth << " " << sz << endl;
+        if (maxDepth >= L) return L + 1;
+        else return min(maxDepth + (L - maxDepth) / 2, (int)sz) + 1;
 	}
 
 	
