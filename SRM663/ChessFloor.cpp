@@ -153,7 +153,32 @@ typedef long long LL;
 class ChessFloor {
 	public:
 	int minimumChanges(vector <string> floor) {
-		
+        long N = floor.size();
+        
+        int A[100] = {0};
+        int B[100] = {0};
+        for (long i = 0; i < N; i++) {
+            for (long j = 0; j < N; j++) {
+                if ((i+j)%2) {
+                    A[floor[i][j] - 'a']++;
+                } else {
+                    B[floor[i][j] - 'a']++;
+                }
+            }
+        }
+        
+        int maxSum = 0;
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                if (i != j) {
+                    maxSum = max(maxSum, A[i] + B[j]);
+                }
+            }
+        }
+        
+//        cerr << maxSum << endl;
+        
+        return N * N - maxSum;
 	}
 
 	
