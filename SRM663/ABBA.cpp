@@ -98,7 +98,19 @@ typedef long long LL;
 class ABBA {
 	public:
 	string canObtain(string initial, string target) {
-		
+        while (true) {
+            if (initial.length() == target.length()) break;
+
+            if (target[target.length() - 1] == 'A') {
+                target = target.substr(0, target.length() - 1);
+            } else {
+                target = target.substr(0, target.length() - 1);
+                reverse(target.begin(), target.end());
+            }
+        }
+        
+        if (initial == target) return "Possible";
+        else return "Impossible";
 	}
 
 	
