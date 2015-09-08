@@ -100,10 +100,30 @@ using namespace std;
 
 typedef long long LL;
 
+int dp[10000001];
+
 class ModModMod {
 	public:
 	long long findSum(vector <int> m, int R) {
-		
+        for (int i = 1; i <= R; i++) {
+            dp[i] = 1;
+        }
+        
+        for (int i = 0; i < m.size(); i++) {
+            int v = m[i];
+            if (v > R) continue;
+            for (int j = v; j <= R; j++) {
+                dp[j%v] += dp[j];
+            }
+            R = v - 1;
+        }
+        
+//        cout << "R " << R << endl;
+        
+        LL ans = 0;
+        for (int i = 0; i <= R; i++) ans += i * dp[i];
+        
+        return ans;
 	}
 
 	
