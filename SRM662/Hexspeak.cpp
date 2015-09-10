@@ -95,6 +95,7 @@ Returns: "Error!"
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -103,7 +104,34 @@ typedef long long LL;
 class Hexspeak {
 	public:
 	string decode(long long ciphertext) {
-		
+        char hexs[100];
+        int cnt = 0;
+
+        while (true) {
+            if (ciphertext == 0) break;
+            LL n = ciphertext % 16;
+            ciphertext /= 16;
+            hexs[cnt] = n;
+            cnt++;
+//            cerr << n << endl;
+        }
+        
+        stringstream ss;
+        for (int i = 0; i < cnt; i++) {
+            int hex = hexs[i];
+            if (hex >= 10) {
+                ss << char('A' + (hex - 10));
+            } else if (hex == 0) {
+                ss << 'O';
+            } else if (hex == 1) {
+                ss << 'I';
+            } else {
+                return "Error!";
+            }
+        }
+        string res = ss.str();
+        reverse(res.begin(), res.end());
+        return res;
 	}
 
 	
