@@ -119,6 +119,7 @@ Returns: 3
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -127,7 +128,32 @@ typedef long long LL;
 class OrderOfOperationsDiv2 {
 	public:
 	int minTime(vector <string> s) {
-		
+        int n = s.size();
+        int m = s[0].length();
+        
+        int masks[21] = {0};
+        int fMask = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                masks[i] |= (s[i][j] == '1') << j;
+            }
+            fMask |= masks[i];
+        }
+        
+        const int INF = 1000000000;
+        vector<int> dist(1 << m, INF);
+        dist[0] = 0;
+        for (int i = 0; i < 1 << m; i++) {
+            for (int j = 0; j < n; j++) {
+                int resMask = i | masks[j];
+                int difMask = resMask - i;
+                unsigned int cnt = __builtin_popcount(difMask);
+                
+                dist[resMask] = min(dist[resMask], dist[i] + int(cnt * cnt));
+            }
+        }
+        
+        return dist[fMask];
 	}
 
 	
