@@ -88,7 +88,21 @@ typedef long long LL;
 class ExactTreeEasy {
 	public:
 	vector <int> getTree(int n, int m) {
-		
+        vector<int> edges;
+        
+        int begin = 0;
+        for (int i = 1; i < n; i++) {
+            if (n - m + 2 <= i) {
+                edges.push_back(1);
+                edges.push_back(i);
+            } else {
+                edges.push_back(begin);
+                edges.push_back(i);
+                begin = i;
+            }
+        }
+        
+        return edges;
 	}
 
 	
