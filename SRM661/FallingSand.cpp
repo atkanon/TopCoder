@@ -158,7 +158,22 @@ typedef long long LL;
 class FallingSand {
 	public:
 	vector <string> simulate(vector <string> board) {
-		
+        long sz = board.size();
+        long len = board[0].length();
+        for (int i = 0; i < len; i++) {
+            while (true) {
+                bool flg = false;
+                for (int j = 0; j < sz - 1; j++) {
+                    if (board[j][i] == 'o' && board[j + 1][i] == '.') {
+                        board[j][i] = '.';
+                        board[j + 1][i] = 'o';
+                        flg = true;
+                    }
+                }
+                if (!flg) break;
+            }
+        }
+        return board;
 	}
 
 	
