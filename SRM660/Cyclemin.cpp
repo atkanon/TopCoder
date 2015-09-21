@@ -96,8 +96,30 @@ typedef long long LL;
 
 class Cyclemin {
 	public:
+    string smallString(string s, string t) {
+        long len = s.length();
+        for (int i = 0; i < len; i++) {
+            if (s[i] < t[i]) return s;
+            else if (s[i] > t[i]) return t;
+        }
+
+        return s;
+    }
 	string bestmod(string s, int k) {
-		
+        long len = s.length();
+        string res = s;
+        for (int i = 0; i < len; i++) {
+            string t = s.substr(i, len - i) + s.substr(0, i);
+            int k2 = k;
+            for (int j = 0; j < len; j++) {
+                if (t[j] != 'a' && k2) {
+                    t[j] = 'a';
+                    k2--;
+                }
+            }
+            res = smallString(res, t);
+        }
+        return res;
 	}
 
 	
