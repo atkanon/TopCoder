@@ -80,7 +80,24 @@ typedef long long LL;
 class FilipTheFrog {
 	public:
 	int countReachableIslands(vector <int> positions, int L) {
-		
+        long sz = positions.size();
+        int reachable[50] = {0};
+        reachable[0] = 1;
+        for (int t = 0; t < sz; t++) {
+            for (int i = 0; i < sz; i++) {
+                for (int j = 0; j < sz; j++) {
+                    if (reachable[i] && abs(positions[i] - positions[j]) <= L) {
+                        reachable[j] = 1;
+                    }
+                }
+            }
+        }
+        
+        int cnt = 0;
+        for (int i = 0; i < sz; i++) {
+            if (reachable[i]) cnt++;
+        }
+        return cnt;
 	}
 
 	
