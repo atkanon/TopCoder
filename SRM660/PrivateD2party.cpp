@@ -94,7 +94,57 @@ typedef long long LL;
 class PrivateD2party {
 	public:
 	int getsz(vector <int> a) {
-		
+        long sz = a.size();
+        int removed[60] = {0};
+        int res = 0;
+        
+        while (true) {
+            bool finish = true;
+            for (int i = 0; i < sz; i++) {
+                if (removed[i]) continue;
+                
+                bool flg = true;
+                for (int j = 0; j < sz; j++) {
+                    if (a[j] == i && !removed[j]) {
+                        
+                        flg = false;
+                    }
+                }
+                if (flg) {
+                    res++;
+                    removed[i]++;
+                    finish = false;
+                } else {
+                }
+            }
+            if (finish) break;
+        }
+
+        for (int i = 0; i < sz; i++) {
+            if (removed[i]) continue;
+
+            int cnt = 0;
+            int current = i;
+            while (true) {
+                cnt++;
+                removed[current]++;
+
+                bool found = false;
+                for (int j = 0; j < sz; j++) {
+                    if (a[j] == current && !removed[j]) {
+                        current = j;
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (!found) break;
+            }
+            
+            if (cnt == 1) res++;
+            else res += cnt - 1;
+        }
+        return res;
 	}
 
 	
