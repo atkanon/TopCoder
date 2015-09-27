@@ -76,8 +76,35 @@ typedef long long LL;
 
 class PublicTransit {
 	public:
+    int calcDist(pair<int, int> t1, pair<int, int> t2, int R, int C) {
+        int maxDist = -1;
+        for (int p1x = 0; p1x < C; p1x++) {
+            for (int p1y = 0; p1y < R; p1y++) {
+                for (int p2x = 0; p2x < C; p2x++) {
+                    for (int p2y = 0; p2y < R; p2y++) {
+                        int dist = abs(p2x - p1x) + abs(p2y - p1y);
+                        dist = min(dist, abs(t1.first - p1x) + abs(p2x - t2.first) + abs(t1.second - p1y) + abs(p2y - t2.second));
+                        dist = min(dist, abs(t2.first - p1x) + abs(p2x - t1.first) + abs(t2.second - p1y) + abs(p2y - t1.second));
+                        maxDist = max(maxDist, dist);
+                    }
+                }
+            }
+        }
+        return maxDist;
+    }
+    
 	int minimumLongestDistance(int R, int C) {
-		
+        int res = 1<<29;
+        for (int t1x = 0; t1x < C; t1x++) {
+            for (int t1y = 0; t1y < R; t1y++) {
+                for (int t2x = 0; t2x < C; t2x++) {
+                    for (int t2y = 0; t2y < R; t2y++) {
+                        res = min(res, calcDist(make_pair(t1x, t1y), make_pair(t2x, t2y), R, C));
+                    }
+                }
+            }
+        }
+        return res;
 	}
 
 	
