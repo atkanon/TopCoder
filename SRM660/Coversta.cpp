@@ -123,7 +123,69 @@ typedef long long LL;
 class Coversta {
 	public:
 	int place(vector <string> a, vector <int> x, vector <int> y) {
-		
+        long h = a.size();
+        long w = a[0].length();
+        long n = x.size();
+        vector<vector<int> > V(h, vector<int>(w, 0));
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                for (int k = 0; k < n; k++) {
+                    int _x = i + x[k];
+                    int _y = j + y[k];
+                    if (0 <= _x && _x < h && 0 <= _y && _y < w) {
+                        V[i][j] += a[_x][_y] - '0';
+                    }
+                }
+            }
+        }
+        
+/*        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                cerr << V[i][j];
+                if (j < w - 1) cerr << " ";
+                else cerr << endl;
+            }
+        }*/
+        
+        int res = 0;
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+//                cerr << i << " " << j << endl;
+                
+                vector<vector<int> > W = V;
+                for (int k = 0; k < n; k++) {
+                    int x1 = i + x[k];
+                    int y1 = j + y[k];
+                    if (0 <= x1 && x1 < h && 0 <= y1 && y1 < w) {
+                        for (int l = 0; l < n; l++) {
+                            int x2 = x1 - x[l];
+                            int y2 = y1 - y[l];
+                            if (0 <= x2 && x2 < h && 0 <= y2 && y2 < w) {
+                                W[x2][y2] -= a[x1][y1] - '0';
+                            }
+                        }
+                    }
+                }
+                
+/*                for (int k = 0; k < h; k++) {
+                    cerr << " ";
+                    for (int l = 0; l < w; l++) {
+                        cerr << V[k][l];
+                        if (l < w - 1) cerr << " ";
+                        else cerr << endl;
+                    }
+                }*/
+                
+                for (int k = 0; k < h; k++) {
+                    for (int l = 0; l < w; l++) {
+                        res = max(res, V[i][j] + W[k][l]);
+//                        cerr << res << endl;
+                    }
+                }
+            }
+        }
+
+        return res;
 	}
 
 	
