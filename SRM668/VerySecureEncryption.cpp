@@ -93,7 +93,22 @@ typedef long long LL;
 class VerySecureEncryption {
 	public:
 	string encrypt(string message, vector <int> key, int K) {
-		
+        long len = message.length();
+        vector<char> m(len);
+        for (int i = 0; i < len; i++) m[i] = message[i];
+        
+        for (int i = 0; i < K; i++) {
+            vector<char> m2(len);
+            for (int j = 0; j < len; j++) {
+                m2[key[j]] = m[j];
+            }
+            m = m2;
+        }
+        
+        string res = "";
+        for (int i = 0; i < len; i++) res += m[i];
+        
+        return res;
 	}
 
 	
