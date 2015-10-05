@@ -104,7 +104,33 @@ typedef long long LL;
 class ApplesAndOrangesEasy {
 	public:
 	int maximumApples(int N, int K, vector <int> info) {
-		
+        vector<int> apple(N * 2, 0);
+        for (int i = 0; i < info.size(); i++) apple[info[i] - 1]++;
+        
+        for (int i = 0; i < N; i++) {
+            if (apple[i]) continue;
+            
+            bool canApple = true;
+            int cnt = 0;
+            for (int j = 0; j < N; j++) {
+                if (j == i || apple[j]) cnt++;
+                int lost = j - K;
+                if (lost >= 0 && (apple[lost] || lost == i)) cnt--;
+                
+                if (cnt > K / 2) canApple = false;
+            }
+            
+            if (canApple) apple[i] = true;
+        }
+        
+        int cnt = 0;
+        for (int i = 0; i < N; i++) {
+            if (apple[i]) cnt++;
+            
+//            if (apple[i]) cerr << i << ": o" << endl;
+//            else cerr << i << ": " << endl;
+        }
+        return cnt;
 	}
 
 	
