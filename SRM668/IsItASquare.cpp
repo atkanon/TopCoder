@@ -89,6 +89,7 @@ Returns: "Not a square"
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -97,7 +98,28 @@ typedef long long LL;
 class IsItASquare {
 	public:
 	string isSquare(vector <int> x, vector <int> y) {
-		
+        string notSquare = "Not a square";
+        string isSquare = "It's a square";
+        
+        vector<long> V;
+        
+        V.push_back((x[0] - x[1]) * (x[0] - x[1]) + (y[0] - y[1]) * (y[0] - y[1]));
+        V.push_back((x[1] - x[2]) * (x[1] - x[2]) + (y[1] - y[2]) * (y[1] - y[2]));
+        V.push_back((x[2] - x[3]) * (x[2] - x[3]) + (y[2] - y[3]) * (y[2] - y[3]));
+        V.push_back((x[3] - x[0]) * (x[3] - x[0]) + (y[3] - y[0]) * (y[3] - y[0]));
+
+        V.push_back((x[0] - x[2]) * (x[0] - x[2]) + (y[0] - y[2]) * (y[0] - y[2]));
+        V.push_back((x[3] - x[1]) * (x[3] - x[1]) + (y[3] - y[1]) * (y[3] - y[1]));
+
+        sort(V.begin(), V.end());
+        
+        if (V[0] != V[1]) return notSquare;
+        if (V[1] != V[2]) return notSquare;
+        if (V[2] != V[3]) return notSquare;
+
+        if (V[4] != V[5]) return notSquare;
+        
+        return isSquare;
 	}
 
 	
