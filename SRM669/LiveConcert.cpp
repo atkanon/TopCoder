@@ -104,6 +104,7 @@ Returns: 1300
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -112,7 +113,20 @@ typedef long long LL;
 class LiveConcert {
 	public:
 	int maxHappiness(vector <int> h, vector <string> s) {
-		
+        map<string, int> songs;
+        for (int i = 0; i < s.size(); i++) {
+            if (songs.find(s[i]) != songs.end()) {
+                songs[s[i]] = max(songs[s[i]], h[i]);
+            } else {
+                songs[s[i]] = h[i];
+            }
+        }
+
+        int sum = 0;
+        for (auto ite = songs.begin(); ite != songs.end(); ite++) {
+            sum += ite->second;
+        }
+        return sum;
 	}
 
 	
