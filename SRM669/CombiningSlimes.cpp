@@ -90,6 +90,7 @@ Returns: 395
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -98,7 +99,15 @@ typedef long long LL;
 class CombiningSlimes {
 	public:
 	int maxMascots(vector <int> a) {
-		
+        sort(a.begin(), a.end());
+        int score = 0;
+        while (a.size() > 1) {
+            score += a[0] * a[1];
+            int newSlime = a[0] + a[1];
+            a.erase(a.begin());
+            a[0] = newSlime;
+        }
+        return score;
 	}
 
 	
