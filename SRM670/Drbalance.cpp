@@ -103,7 +103,7 @@ class Drbalance {
 	public:
     int calcNegativity(string s) {
         int negativity = 0;
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0; i <= s.length(); i++) {
             string t = s.substr(0, i);
             
             int pcnt = 0, mcnt = 0;
