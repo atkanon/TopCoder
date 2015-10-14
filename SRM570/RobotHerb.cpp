@@ -1,75 +1,111 @@
+// 2 "RobotHerb.cpp"
 // BEGIN CUT HERE
 /*
-□SRM370 div1 easy
+// PROBLEM STATEMENT
+// Robot Herb is playing on an infinite square grid.
+At any moment, Herb stands on one of the squares and he faces one of the four cardinal directions.
+In his memory, Herb has a program.
+The program is a sequence of commands.
+For each i, the i-th of these commands has the following form:
 
-□問題文
-操作：aだけ進んでa回90度回転してを何回か繰り返す
-T回操作した後の座標と、初期座標のマンハッタン距離を求める
+First move forward a[i] tiles.
+Then turn 90 degrees to the right, a[i] times in a row.
 
-□解説
-4回周期
-1回で同じ向きか違う向きか
-違う向きなら4回で同じ座標に戻る
+Herb has decided to run the program T times.
+You are given the int T and the vector <int> a that describes Herb's program.
+Let A be the initial position of Herb and B be his position after the program was executed T times. Return the Manhattan distance between tiles A and B.
+
+DEFINITION
+Class:RobotHerb
+Method:getdist
+Parameters:int, vector <int>
+Returns:long long
+Method signature:long long getdist(int T, vector <int> a)
+
+
+NOTES
+-Let's introduce a Cartesian coordinate system on the grid so that each cardinal direction is parallel to one of the axes. The Manhattan distance between two tiles with centers at points (x1, y1) and (x2, y2) is defined as |x1-x2| + |y1-y2|.
+
 
 CONSTRAINTS
 -T will be between 1 and 1,000,000,000, inclusive.
 -a will contain between 1 and 50 elements, inclusive.
 -Each element of a will be between 1 and 10,000,000, inclusive.
 
+
+EXAMPLES
+
+0)
+1
+{1,2,3}
+
+Returns: 2
+
+Suppose that initially Herb stands on the tile with center at (0, 0) and faces the positive y direction. The program will get executed as follows:
+
+                       tile         direction
+After 1st command:     (0, 1)       positive x
+After 2nd command:     (2, 1)       negative x
+After 3rd command:     (-1, 1)      negative y
+
+The manhattan distance between the initial and the final positions is |-1| + |1| = 2.
+
+1)
+100
+{1}
+
+Returns: 0
+
+
+
+2)
+5
+{1,1,2}
+
+Returns: 10
+
+
+
+3)
+1000000000
+{100}
+
+Returns: 100000000000
+
+The answer doesn't fit into a 32-bit integer data type.
+
+4)
+570
+{2013,2,13,314,271,1414,1732}
+
+Returns: 4112
+
+
+
 */
 // END CUT HERE
-//#line 87 "RobotHerb.cpp"
+
 #include <string>
 #include <vector>
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-#include <climits>
-#include <cfloat>
-#include <map>
-#include <utility>
-#include <set>
 #include <iostream>
-#include <memory>
-#include <algorithm>
-#include <functional>
+#include <cstdlib>
+#include <cstdio>
 #include <sstream>
-#include <complex>
-#include <stack>
-#include <queue>
+#include <algorithm>
+#include <map>
+#include <set>
+
 using namespace std;
-static const double EPS = 1e-9;
-const int INF = 987654321;
+
 typedef long long LL;
 
 class RobotHerb {
 	public:
 	long long getdist(int T, vector <int> a) {
-		LL x = 0, y = 0, di = 0;
-		LL b[4][3] = {0};
-		int sz = a.size();
-		for(int j = 0; j < 4; j++){
-			for(int i = 0; i < sz; i++){
-				if(di == 0){
-					y += a[i];
-				}else if(di == 1){
-					x += a[i];
-				}else if(di == 2){
-					y -= a[i];
-				}else{
-					x -= a[i];
-				}
-				di = (di+a[i]%4)%4;
-			}
-			b[j][0] = x, b[j][1] = y, b[j][2] = di;
-		}
-
-		x = b[3][0]*(T/4) + (T%4 == 0 ? 0 : b[T%4-1][0]);
-		y = b[3][1]*(T/4) + (T%4 == 0 ? 0 : b[T%4-1][1]);
-		return abs(x)+abs(y);
+		
 	}
 
-  
+	
 // BEGIN CUT HERE
 	public:
 	void run_test(int Case) { if ((Case == -1) || (Case == 0)) test_case_0(); if ((Case == -1) || (Case == 1)) test_case_1(); if ((Case == -1) || (Case == 2)) test_case_2(); if ((Case == -1) || (Case == 3)) test_case_3(); if ((Case == -1) || (Case == 4)) test_case_4(); }
@@ -87,8 +123,10 @@ class RobotHerb {
 };
 
 // BEGIN CUT HERE
+
 int main() {
-  RobotHerb ___test;
-  ___test.run_test(-1);
+	RobotHerb ___test;
+	___test.run_test(-1);
 }
+
 // END CUT HERE
