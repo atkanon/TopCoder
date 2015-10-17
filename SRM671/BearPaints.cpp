@@ -97,7 +97,12 @@ typedef long long LL;
 class BearPaints {
 	public:
 	long long maxArea(int W, int H, long long M) {
-		
+        long long res = 0;
+        for (long long w = 1; w <= W; w++) {
+            long long m = M / w;
+            res = max(res, min(LL(H), m) * w);
+        }
+        return res;
 	}
 
 	
