@@ -104,7 +104,52 @@ typedef long long LL;
 class BearDartsDiv2 {
 	public:
 	long long count(vector <int> w) {
-		
+        long sz = w.size();
+        map<LL, LL> count[501];
+        for (int i = 0; i < sz; i++) {
+            for (int j = i + 1; j < sz; j++) {
+                if (w[j] % w[i] == 0) {
+                    int v = w[j] / w[i];
+                    if (count[i].find(v) != count[i].end()) {
+                        count[i][v]++;
+                    } else {
+                        count[i][v] = 1;
+                    }
+                }
+            }
+        }
+        
+        map<LL, LL>::iterator ite;
+        for (int i = 0; i < sz; i++) {
+            for (int j = 0; j < i; j++) {
+                for (ite = count[i].begin(); ite != count[i].end(); ite++) {
+                    LL v = ite->first;
+                    if (count[j].find(v) != count[j].end()) {
+                        count[j][v] += ite->second;
+                    } else {
+                        count[j][v] = ite->second;
+                    }
+                }
+            }
+        }
+        
+/*        for (int i = 0; i < sz; i++) {
+            for (ite = count[i].begin(); ite != count[i].end(); ite++) {
+                cerr << i << " " << ite->first << " " << ite->second << endl;
+            }
+        }*/
+        
+        LL res = 0;
+        for (int i = 0; i < sz; i++) {
+            for (int j = i + 1; j < sz; j++) {
+                LL v = w[i] * w[j];
+                if (count[j+1].find(v) != count[j+1].end()) {
+                    res += count[j+1][v];
+                }
+            }
+        }
+        
+        return res;
 	}
 
 	
