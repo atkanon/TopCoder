@@ -96,7 +96,29 @@ typedef long long LL;
 class SetPartialOrder {
 	public:
 	string compareSets(vector <int> a, vector <int> b) {
-		
+        int a2[101] = {0};
+        int b2[101] = {0};
+        
+        for (int i = 0; i < a.size(); i++) a2[a[i]]++;
+        for (int i = 0; i < b.size(); i++) b2[b[i]]++;
+
+        int aless = 0;
+        for (int i = 0; i < b.size(); i++) {
+            if (!a2[b[i]]) {
+                aless = 1;
+            }
+        }
+        int bless = 0;
+        for (int i = 0; i < a.size(); i++) {
+            if (!b2[a[i]]) {
+                bless = 1;
+            }
+        }
+        
+        if (!aless && !bless) return "EQUAL";
+        if (!bless) return "LESS";
+        if (!aless) return "GREATER";
+        return "INCOMPARABLE";
 	}
 
 	
