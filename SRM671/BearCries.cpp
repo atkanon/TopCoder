@@ -102,15 +102,40 @@ Returns: 52
 #include <algorithm>
 #include <map>
 #include <set>
+#include "string.h"
 
+#define MOD 1000000007
 using namespace std;
 
 typedef long long LL;
 
+static int dp[201][201][201] = {0};
 class BearCries {
 	public:
 	int count(string message) {
-		
+        memset(dp, 0, sizeof(dp));
+        if (message[0] == ';') {
+            dp[0][1][0] = 1;
+        }
+        
+        for (int i = 1; i < message.length(); i++) {
+            for (int j = 0; j < 200; j++) {
+                for (int k = 0; k < 200; k++) {
+                    LL cnt = dp[i-1][j][k];
+                    if (cnt) {
+                        if (message[i] == ';') {
+                            dp[i][j+1][k] = (cnt + dp[i][j+1][k]) % MOD;
+                            dp[i][j][k-1] = (cnt * k + dp[i][j][k-1]) % MOD;
+                        } else {
+                            dp[i][j][k] = (cnt * k + dp[i][j][k]) % MOD;
+                            dp[i][j-1][k+1] = (cnt * j + dp[i][j-1][k+1]) % MOD;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return dp[message.length()-1][0][0];
 	}
 
 	
