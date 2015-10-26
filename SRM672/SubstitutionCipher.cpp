@@ -94,7 +94,52 @@ typedef long long LL;
 class SubstitutionCipher {
 	public:
 	string decode(string a, string b, string y) {
-		
+        int cipher[30] = {0};
+        
+        for (int i = 0; i < 27; i++) cipher[i] = -1;
+        
+        int used[30][2] = {0};
+        int count = 0;
+        for (int i = 0; i < b.length(); i++) {
+            
+            cipher[b[i] - 'A'] = a[i] - 'A';
+            if (!used[b[i] - 'A'][1]) {
+                used[b[i] - 'A'][1]++;
+                count++;
+            }
+            if (!used[a[i] - 'A'][0]) {
+                used[a[i] - 'A'][0]++;
+            }
+        }
+        
+/*        for (int i = 0; i < 30; i++) {
+            cerr << char(i + 'a') << " " << used[i][0] << endl;
+        }*/
+        
+        int v1 = -1, v2 = -1;
+        for (int i = 'A'; i <= 'Z'; i++) {
+            if (!used[i - 'A'][0]) {
+                v1 = i - 'A';
+            }
+            if (!used[i - 'A'][1]) {
+                v2 = i - 'A';
+            }
+        }
+        
+        if (count == 25) {
+            cipher[v2] = v1;
+        }
+        
+        string x = "";
+        for (int i = 0; i < y.length(); i++) {
+            if (cipher[y[i] - 'A'] != -1) {
+                x += cipher[y[i] - 'A'] + 'A';
+            } else {
+                return "";
+            }
+        }
+        
+        return x;
 	}
 
 	
