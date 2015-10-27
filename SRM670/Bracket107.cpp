@@ -98,8 +98,46 @@ typedef long long LL;
 
 class Bracket107 {
 	public:
+    bool isCorrectBracket(string s) {
+        int open = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] == '(') open++;
+            else open--;
+            if (open < 0) return false;
+        }
+        
+        if (open == 0) return true;
+        else return false;
+    }
 	int yetanother(string s) {
-		
+        long len = s.length();
+        int res = 0;
+        set<string> seen;
+        seen.insert(s);
+        for (int i = 0; i < len; i++) {
+            string t = s.substr(0, i) + s.substr(i + 1, len - i);
+            for (int j = 0; j <= len - 1; j++) {
+                string u = t.substr(0, j) + ")" + t.substr(j, len - 1 - j);
+                string u2 = t.substr(0, j) + "(" + t.substr(j, len - 1 - j);
+//                cerr << u << endl;
+//                cerr << u2 << endl;
+                if (isCorrectBracket(u)) {
+                    if (seen.find(u) == seen.end()) {
+                        seen.insert(u);
+//                        cerr << u << endl;
+                        res++;
+                    }
+                }
+                if (isCorrectBracket(u2)) {
+                    if (seen.find(u2) == seen.end()) {
+                        seen.insert(u2);
+//                        cerr << u2 << endl;
+                        res++;
+                    }
+                }
+            }
+        }
+        return res;
 	}
 
 	
