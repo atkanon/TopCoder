@@ -100,15 +100,45 @@ Returns: 5587021440
 #include <algorithm>
 #include <map>
 #include <set>
+#include <cmath>
 
+#define INF 1000000000000
 using namespace std;
 
 typedef long long LL;
 
 class Procrastination {
 	public:
+    long long find(LL turn, LL n) {
+//        cerr << turn << " " << n << endl;
+        if (turn <= 1) return n;
+        LL a = INF, b = INF, m = n - 1;
+
+//        LL upper = sqrt(double(n));
+        for (int i = 2; i <= n; i++) {
+            if (n % i == 0 && n / i <= turn) {
+                a = n / i;
+                break;
+            }
+        }
+//        upper = sqrt(double(m));
+        for (int i = 2; i <= m; i++) {
+            if (m % i == 0 && m / i <= turn) {
+                b = m / i;
+                break;
+            }
+        }
+        
+//        if (a == INF && b == INF) return n;
+        
+        if (a < b) {
+            return find(b - 1, m);
+        } else {
+            return find(a - 1, n + 1);
+        }
+    }
 	long long findFinalAssignee(long long n) {
-		
+        return find(n, n);
 	}
 
 	
