@@ -82,7 +82,9 @@ typedef long long LL;
 class PaintTheRoom {
 	public:
 	string canPaintEvenly(int R, int C, int K) {
-		
+        string yes = "Paint", no = "Cannot paint";
+        if (K == 1 || R * C % 2 == 0) return yes;
+        else return no;
 	}
 
 	
