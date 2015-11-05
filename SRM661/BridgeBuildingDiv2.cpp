@@ -99,6 +99,8 @@ Returns: 54
 #include <map>
 #include <set>
 
+#define INF 1000000000
+
 using namespace std;
 
 typedef long long LL;
@@ -106,7 +108,62 @@ typedef long long LL;
 class BridgeBuildingDiv2 {
 	public:
 	int minDiameter(vector <int> a, vector <int> b, int K) {
-		
+        long sz = a.size() + 1;
+        int res = INF;
+        for (int i = 0; i < 1 << sz; i++) {
+            int exist[12] = {0};
+            int cnt = 0;
+            for (int j = 0; j < sz; j++) {
+                if ((i>>j) & 1) {
+                    exist[j]++;
+                    cnt++;
+                }
+            }
+            
+            if (cnt != K) continue;
+            
+/*            for (int j = 0; j < sz; j++) {
+                cerr << exist[j] << " ";
+            }
+            cerr << endl;*/
+            
+            int dist[30][30] = {0};
+            for (int i = 0; i < 30; i++) {
+                for (int j = 0; j < 30; j++) {
+                    dist[i][j] = INF;
+                }
+                dist[i][i] = 0;
+             }
+            for (int i = 0; i < sz - 1; i++) {
+                dist[i][i+1] = dist[i+1][i] = a[i];
+                dist[i+sz][i+sz+1] = dist[i+sz+1][i+sz] = b[i];
+            }
+            for (int i = 0; i < sz; i++) {
+                if (exist[i]) {
+                    dist[i][i+sz] = 0;
+                }
+            }
+            
+            for (int i = 0; i < sz * 2; i++) {
+                for (int j = 0; j < sz * 2; j++) {
+                    for (int k = 0; k < sz * 2; k++) {
+                        dist[j][k] = dist[k][j] = min(dist[j][k], dist[j][i] + dist[i][k]);
+                    }
+                }
+            }
+            
+            int maxDist = -1;
+            for (int i = 0; i < sz * 2; i++) {
+                for (int j = 0; j < sz * 2; j++) {
+                    maxDist = max(maxDist, dist[i][j]);
+//                    cerr << i << " " << j << " " << dist[i][j] << endl;
+                }
+            }
+
+            res = min(res, maxDist);
+        }
+        
+        return res;
 	}
 
 	
