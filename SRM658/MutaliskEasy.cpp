@@ -98,14 +98,42 @@ Returns: 7
 #include <algorithm>
 #include <map>
 #include <set>
+#include "string.h"
 
 using namespace std;
 
 typedef long long LL;
 
+static int dp[60][61][61][61];
 class MutaliskEasy {
 	public:
 	int minimalAttacks(vector <int> x) {
+        memset(dp, 0, sizeof(dp));
+        for (int i = 0; i < 3 - x.size(); i++) x.push_back(0);
+        dp[0][x[0]][x[1]][x[2]]++;
+        
+        int turn = 0;
+        while (true) {
+            for (int i = 0; i < 61; i++) {
+                for (int j = 0; j < 61; j++) {
+                    for (int k = 0; k < 61; k++) {
+                        if (dp[turn][i][j][k]) {
+                            if (i + j + k == 0) return turn;
+                            
+//                            cerr << turn << " " << i << " " << j << " " << k << endl;
+                            dp[turn+1][max(0, i-9)][max(0, j-3)][max(0, k-1)]++;
+                            dp[turn+1][max(0, i-9)][max(0, j-1)][max(0, k-3)]++;
+                            dp[turn+1][max(0, i-3)][max(0, j-9)][max(0, k-1)]++;
+                            dp[turn+1][max(0, i-3)][max(0, j-1)][max(0, k-9)]++;
+                            dp[turn+1][max(0, i-1)][max(0, j-9)][max(0, k-3)]++;
+                            dp[turn+1][max(0, i-1)][max(0, j-3)][max(0, k-9)]++;
+                        }
+                    }
+                }
+            }
+            
+            turn++;
+        }
 		
 	}
 
